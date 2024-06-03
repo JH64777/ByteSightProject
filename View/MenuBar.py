@@ -62,7 +62,7 @@ class MenuBar(ParentView):
     def SaveAs(self): # 파일 다른 이름으로 저장
         try:
             newData = self.tabmaker.GetData() # 현재까지 작업한 파일 데이터 가져오기
-            fname = QFileDialog.getSaveFileName(self, "Save File", "", "All Files (*)")
+            fname = QFileDialog.getSaveFileName(self, "Save File", "", "All Files (*)") # GUI형식으로 파일 저장
             self.fileManager.SaveData(newData, fname[0]) # 파일 최신 데이터랑 저장 경로
         except Exception as e: # 파일을 열지도 않고 저장할 시
             print("여기다가 에러 표시창 만들 것")
