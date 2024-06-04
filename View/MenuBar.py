@@ -1,4 +1,5 @@
 import sys, os
+import functools
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from GuideWindow import GuideWindow
 from Operation.FileManager import FileManager
@@ -6,6 +7,8 @@ from ParentView import ParentView
 from PyQt5.QtWidgets import QAction, QFileDialog
 from PyQt5.QtGui import QIcon
 from Tab import TabGenerator
+from ScenarioMaker import ScenarioFactory
+
 
 class MenuBar(ParentView):
     def __init__(self, instance): # 인스턴스를 받음으로 Main에서 메뉴바를 생성할 수 있게끔 설정
@@ -14,6 +17,7 @@ class MenuBar(ParentView):
         self.guidewin = GuideWindow() # 가이드 창을 생성하기 위한 인스턴스
         self.tabmaker = TabGenerator()
         self.path = None
+        self.scenario = ScenarioFactory(600, 580)
         self.CreateMenuBar()
     
     def CreateMenuBar(self):
@@ -25,7 +29,12 @@ class MenuBar(ParentView):
         saveasFile.triggered.connect(self.SaveAs) # 해당 항목이 선택될 시 Save호출
 
         bringGuide = QAction(QIcon(None), "가이드 북", self.instance) # 가이드 북 창 열기
+        scenario1 = QAction(QIcon(None), "연습용 시나리오1", self.instance) # 연습 시나리오 창 1
+        scenario2 = QAction(QIcon(None), "연습용 시나리오2", self.instance) # 연습 시나리오 창 2
         bringGuide.triggered.connect(self.BringGuide) # 해당 항목 선택될 시 Bring Guide 호출
+        scenario1.triggered.connect(functools.partial(self.scenario.Scenario, "Scenario1", "https://www.google.com"))
+        scenario2.triggered.connect(functools.partial(self.scenario.Scenario, "Scenario2", "https://www.google.com"))
+        
 
         menubar = self.instance.menuBar() # 메뉴바에 대한 객체 생성
         menubar.setNativeMenuBar(False) # 기본으로 PyQt에서 제공하는 메뉴바 사용 안함(사용자 지정으로 사용할 것임을 의미)
@@ -39,6 +48,8 @@ class MenuBar(ParentView):
         
         guide = menubar.addMenu('가이드라인') # 메뉴바 가이드라인 버튼 생성
         guide.addAction(bringGuide) # 가이드 북 액션 추가
+        guide.addAction(scenario1) # 가이드 시나리오1 추가
+        guide.addAction(scenario2) # 가이드 시나리오2 추가
     
     def OpenFile(self): # 파일 찾기 코드
         fname = QFileDialog.getOpenFileName(self.instance) # 파일 탐색기를 통해 파일을 선택할 수 있게 하는 코드

@@ -7,7 +7,6 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
         super().__init__()
         self.allowedEdittingKey = (Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9, Qt.Key_A, Qt.Key_B, Qt.Key_C, Qt.Key_D, Qt.Key_E, Qt.Key_F, Qt.Key_Backspace) # 파일 편집 시 허용된 글자
         self.insertCharCount = 0 # 입력되는 글자 숫자를 세어주는 변수
-        self.char_format = QTextCharFormat() # 문자를 꾸미는 기능을 위해 객체 생성
         self.setLineSpacing(150) # 줄 간격의 크기 1.5배
         # self.limitcharcount = 47 # 한 줄에 사용 가능한 글자 수
 
@@ -20,23 +19,34 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
         block_format = QTextBlockFormat() # 줄 간격을 설정하기 위해 생성하는 객체
         block_format.setLineHeight(spacing_percent, QTextBlockFormat.ProportionalHeight) # 위와 아래 글자간 간격 설정(백분율 단위로)
         cursor.setBlockFormat(block_format) # 설정한 값 적용
-    
-    def ChangeTextColor(self, color): # 색 지정 메서드
-        self.char_format.setForeground(color)
+
+    def GetNextChar(self, cursor):
+        cursor.movePosition(QTextCursor.NextCharacter, QTextCursor.KeepAnchor)
+        return cursor.selectedText()
 
     def keyPressEvent(self, e: QKeyEvent | None) -> None: # 키보드 입력 시 호출되는 메서드
         cursor = self.textCursor() # 커서 객체 생성
-        # lineLeng = len(cursor.block().text()) # 한 줄에 있는 글자들의 갯수
-
         
-        if e.key() in self.allowedEdittingKey: # 편집 시 사용 가능한 키 제한
-            # if lineLeng >= self.limitcharcount and e.key() != Qt.Key_Backspace: # 해당 줄이 한개점을 도달하되 BackSpace가 눌리지 않았을 시 검사
-            #     cursor.movePosition(QTextCursor.NextBlock) # 다음 줄로 커서 설정
-            #     cursor.movePosition(QTextCursor.StartOfBlock) # 다음 줄의 처음 부분으로 설정
-            #     self.setTextCursor(cursor) # 설정 값 적용
+        if e.modifiers() == Qt.ControlModifier:  # Ctrl 키 조합(Ctrl + C, V 등등). (해당 부분만 정의를 해 놓으면 Ctrl과 조합해서 쓰는 기능이 적절하게 잘 작동함)
+            pass
 
-            if e.text().isalpha(): # 입력된 값이 알파벳인가?
-                e = QKeyEvent(e.type(), e.key(), e.modifiers(), e.text().upper()) # e변수에 대문자로 변경한 QKeyEvent객체 대입
+        elif e.key() in self.allowedEdittingKey: # 편집 시 사용 가능한 키 제한
+            if e.key() != Qt.Key_Backspace: # BackSpace가 아니라면
+                if (cursor.position() + 1) % 48 == 0: # 해당 줄이 한계점을 도달 했는지 검사
+                    if self.GetNextChar(cursor) == '': # 파일의 끝 부분 다음 문자는 없으므로 ''과 일치하는 것을 확인함 그래서 저 문자를 통해 밑에 다른 Block이 없다는 점을 알 수 있음
+                        cursor.insertBlock() # 파일의 끝 부분이며 해당 줄의 한계점일 시 밑에 새로운 줄 추가
+
+                    cursor.movePosition(QTextCursor.NextBlock) # 다음 줄로 커서 설정
+                    cursor.movePosition(QTextCursor.StartOfBlock) # 다음 줄의 처음 부분으로 설정
+                    self.setTextCursor(cursor) # 설정 값 적용
+            
+                cursor.deleteChar() # 다음 글자 삭제
+                self.setTextColor(Qt.red) # 색깔 변경
+                e = QKeyEvent(e.type(), e.key(), e.modifiers(), e.text().upper()) # 알파벳 문자 e변수에 대문자로 변경한 QKeyEvent객체 대입 (알파벳이 아니어도 잘 작동함)
+                
+
+            else: # BackSpace라면
+                pass
             
         elif e.key() in (Qt.Key_Right, Qt.Key_Left, Qt.Key_Up, Qt.Key_Down): # 왼쪽 혹은 오른쪽 화살표키가 눌렸는가?
             if e.key() == Qt.Key_Left: # 왼쪽 화살표키가 눌렀는가?
@@ -47,12 +57,12 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
                 self.setTextCursor(cursor) # 커서 위치 지정
             else: # 나머지 방향
                 pass
-        
-        elif e.modifiers() == Qt.ControlModifier:  # Ctrl 키 조합(Ctrl + C, V 등등). (해당 부분만 정의를 해 놓으면 Ctrl과 조합해서 쓰는 기능이 적절하게 잘 작동함)
-            pass
 
         else: # 나머지 경우
             e.ignore() # 키 무시
             return None # 조기 종료
             
         return super().keyPressEvent(e) # 원래 방식대로 동작하게끔 지정
+    
+
+# 다음 줄이 없을때는 어떻게 해결해나갈 것인가?(줄 바꿈 어케 해결할 것인가?)
