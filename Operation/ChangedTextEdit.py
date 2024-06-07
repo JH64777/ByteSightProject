@@ -36,10 +36,12 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
                     if self.GetNextChar(cursor) == '': # 파일의 끝 부분 다음 문자는 없으므로 ''과 일치하는 것을 확인함 그래서 저 문자를 통해 밑에 다른 Block이 없다는 점을 알 수 있음
                         cursor.insertBlock() # 파일의 끝 부분이며 해당 줄의 한계점일 시 밑에 새로운 줄 추가
 
-                    cursor.movePosition(QTextCursor.NextBlock) # 다음 줄로 커서 설정
                     cursor.movePosition(QTextCursor.StartOfBlock) # 다음 줄의 처음 부분으로 설정
                     self.setTextCursor(cursor) # 설정 값 적용
-            
+                elif (cursor.position() + 1) % 3 == 0: # 매번 3번째 글자일때
+                    cursor.insertText(" ") # 공백 삽입
+                    cursor.deleteChar() # 다음 글자 삭제
+
                 cursor.deleteChar() # 다음 글자 삭제
                 self.setTextColor(Qt.red) # 색깔 변경
                 e = QKeyEvent(e.type(), e.key(), e.modifiers(), e.text().upper()) # 알파벳 문자 e변수에 대문자로 변경한 QKeyEvent객체 대입 (알파벳이 아니어도 잘 작동함)
@@ -64,5 +66,3 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
             
         return super().keyPressEvent(e) # 원래 방식대로 동작하게끔 지정
     
-
-# 다음 줄이 없을때는 어떻게 해결해나갈 것인가?(줄 바꿈 어케 해결할 것인가?)

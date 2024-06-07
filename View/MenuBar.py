@@ -7,7 +7,7 @@ from ParentView import ParentView
 from PyQt5.QtWidgets import QAction, QFileDialog
 from PyQt5.QtGui import QIcon
 from Tab import TabGenerator
-from ScenarioMaker import ScenarioFactory
+from ScenarioMaker import ScenarioMaker
 
 
 class MenuBar(ParentView):
@@ -17,10 +17,11 @@ class MenuBar(ParentView):
         self.guidewin = GuideWindow() # 가이드 창을 생성하기 위한 인스턴스
         self.tabmaker = TabGenerator()
         self.path = None
-        self.scenario = ScenarioFactory(600, 580)
+        self.scenario = None
         self.CreateMenuBar()
     
     def CreateMenuBar(self):
+        
         loadFile = QAction(QIcon(None), "파일 불러오기", self.instance) # 파일 불러오기 항목
         loadFile.triggered.connect(self.OpenFile) # 해당 항목이 선택될 시 OpenFile 호출
         saveFile = QAction(QIcon(None), "파일 저장", self.instance)
@@ -32,8 +33,8 @@ class MenuBar(ParentView):
         scenario1 = QAction(QIcon(None), "연습용 시나리오1", self.instance) # 연습 시나리오 창 1
         scenario2 = QAction(QIcon(None), "연습용 시나리오2", self.instance) # 연습 시나리오 창 2
         bringGuide.triggered.connect(self.BringGuide) # 해당 항목 선택될 시 Bring Guide 호출
-        scenario1.triggered.connect(functools.partial(self.scenario.Scenario, "Scenario1", "https://www.google.com"))
-        scenario2.triggered.connect(functools.partial(self.scenario.Scenario, "Scenario2", "https://www.google.com"))
+        scenario1.triggered.connect(functools.partial(self.BringScenario, 1))
+        scenario2.triggered.connect(functools.partial(self.BringScenario, 2))
         
 
         menubar = self.instance.menuBar() # 메뉴바에 대한 객체 생성
@@ -80,3 +81,13 @@ class MenuBar(ParentView):
     
     def BringGuide(self): # 가이드 창 가져오기
         self.guidewin.ShowWindow() # 창 열기
+
+    def BringScenario(self, num):
+        self.scenario = ScenarioMaker(600, 580)
+        match num:
+            case 1:
+                self.scenario.Scenario("Scenario1", "http://localhost:8080/scenario/1")
+            case 2:
+                self.scenario.Scenario("Scenario2", "http://localhost:8080/scenario/2")
+            case _:
+                pass
