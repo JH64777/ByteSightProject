@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteSight</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 1em;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1em;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .navbar .left-nav a {
+            margin-right: 2em;
+        }
+        .navbar .right-nav a {
+            margin-left: 2em;
+        }
+        .navbar .right-nav {
+            display: flex;
+            align-items: center;
+        }
+        .content {
+            padding: 2em;
+            text-align: center;
+        }
+        .content h1 {
+            margin-top: 0;
+        }
+        .btn {
+            padding: 0.5em 1em;
+            color: white;
+            background-color: #333;
+            border: none;
+            cursor: pointer;
+            margin: 0.5em;
+        }
+        .btn:hover {
+            background-color: #555;
+        }
+        .highlight {
+            color: #007BFF;
+        }
+        .signup-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .check-btn {
+            position: absolute;
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 7px 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 0px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="left-nav">
+            <a href="/">홈</a>
+            <a href="/study">공부 게시판</a>
+            <a href="/resources">자료방</a>
+            <a href="/analysis">스테가분석</a>
+            <a href="/about">소개</a>
+        </div>
+        <div class="right-nav">
+            <a href="/login" class="btn">로그인</a>
+            <a href="/signup" class="btn">회원가입</a>
+        </div>
+    </nav>
+
+    <div class="content">
+        <h1>회원가입</h1>
+        <hr>
+        <form action="/signup/submit" method="post">
+            <input type="text" name="st_id" placeholder="ID" id="id" style="height: 30px; width: 300px;">
+            <button type="button" class="check-btn" id="checkbtn">중복검사</button><br><br>
+            <script>
+                var check = document.getElementById("checkbtn");
+                check.addEventListener("click", () => {
+                    fetch("/signup/check", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json",},
+                        body: JSON.stringify({
+                            id : document.getElementById("id").value
+                        })
+                        
+                    })
+                    .then((reply) => reply.json())
+                    .then((message) => {
+                        console.log(message.msg);
+                    })
+                    .catch(error => console.log(error));
+                });
+            </script>
+            <input type="text" name="st_password"placeholder="Password" style="height: 30px; width: 300px;"><br><br>
+            <input type="text" name="st_nickname" placeholder="NickName" style="height: 30px; width: 300px;"><br><br>
+            <input type="text" name="st_mail" placeholder="Email" style="height: 30px; width: 300px;"><br><br>
+            <input type="submit" class="signup-btn" value="회원가입">
+        </form>
+    </div>
+
+</body>
+</html>

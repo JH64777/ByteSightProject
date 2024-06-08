@@ -46,7 +46,6 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
                 self.setTextColor(Qt.red) # 색깔 변경
                 e = QKeyEvent(e.type(), e.key(), e.modifiers(), e.text().upper()) # 알파벳 문자 e변수에 대문자로 변경한 QKeyEvent객체 대입 (알파벳이 아니어도 잘 작동함)
                 
-
             else: # BackSpace라면
                 pass
             

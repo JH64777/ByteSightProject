@@ -1,11 +1,15 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QScrollArea, QWidget
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication
 
 class GuideWindow(QDialog):  # 가이드 창을 위한 클래스
     def __init__(self):
         super().__init__()
         self.MakeWindow()
+        # dpi scaling을 하는 코드
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     
     def MakeWindow(self):
         explainText = """<h1 style="text-align:center;font-weight : bold;">ByteSight에 오신 것을 환영합니다!</h1><hr>
@@ -48,7 +52,6 @@ class GuideWindow(QDialog):  # 가이드 창을 위한 클래스
         
         scroll_area = QScrollArea()
         scroll_area.setWidget(content_widget)
-        scroll_area.setFixedSize(620, 400)  # 스크롤 영역의 크기를 고정
         
         main_layout = QVBoxLayout()
         main_layout.addWidget(scroll_area)
@@ -57,7 +60,7 @@ class GuideWindow(QDialog):  # 가이드 창을 위한 클래스
         self.setWindowIcon(QIcon('View\\photo\\book.png')) # 아이콘 지정
         self.setLayout(main_layout)  # 레이아웃 추가
         self.setWindowModality(Qt.NonModal)  # 해당 윈도우가 생성이 되고난 뒤에 다른 윈도우 창들과 상호작용이 가능한지에 대한 코드(현재 상호작용 가능함)
-        self.setGeometry(300, 300, 400, 350)  # 윈도우의 위치와 크기
+        self.setGeometry(300, 300, 620, 570)  # 윈도우의 위치와 크기
         
     def ShowWindow(self):
         self.show()

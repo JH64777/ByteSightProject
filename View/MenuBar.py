@@ -9,7 +9,6 @@ from PyQt5.QtGui import QIcon
 from Tab import TabGenerator
 from ScenarioMaker import ScenarioMaker
 
-
 class MenuBar(ParentView):
     def __init__(self, instance): # 인스턴스를 받음으로 Main에서 메뉴바를 생성할 수 있게끔 설정
         super().__init__()

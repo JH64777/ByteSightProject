@@ -40,7 +40,7 @@
         }
         .content {
             padding: 2em;
-            text-align: left;
+            text-align: center;
         }
         .content h1 {
             margin-top: 0;
@@ -58,6 +58,19 @@
         }
         .highlight {
             color: #007BFF;
+        }
+        .login-btn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -78,11 +91,13 @@
     </nav>
 
     <div class="content">
-        <h1>스테가날리시스</h1>
+        <h1>로그인</h1>
         <hr>
-        <!--여기다가 사진 띄울 수 있게 할 것-->
-        <input type="file" id="profile" accept="image/png, image/jpeg">
-        <br>파일을 업로드 해주세요
+        <form action="/signup/check" method="get">
+            <input type="text" name="st_id" placeholder="User ID" style="height: 30px; width : 300px;"><br><br>
+            <input type="text" name="st_password" placeholder="User PassWord" style="height: 30px; width : 300px;"><br><br>
+            <input type="submit" class="login-btn" value="로그인">
+        </form>
     </div>
 
 </body>
