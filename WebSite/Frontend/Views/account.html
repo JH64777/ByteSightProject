@@ -107,32 +107,81 @@
     <div class="content">
         <h1>회원가입</h1>
         <hr>
-        <form action="/signup/submit" method="post">
+        <form action="/signup/submit" id="signform" method="post">
             <input type="text" name="st_id" placeholder="ID" id="id" style="height: 30px; width: 300px;">
-            <button type="button" class="check-btn" id="checkbtn">중복검사</button><br><br>
+            <button type="button" class="check-btn" id="checkid">중복검사</button><br><br>
             <script>
-                var check = document.getElementById("checkbtn");
-                check.addEventListener("click", () => {
-                    fetch("/signup/check", {
-                        method: "POST",
-                        headers: {"Content-Type": "application/json",},
-                        body: JSON.stringify({
-                            id : document.getElementById("id").value
+                const checkid = document.getElementById("checkid");
+                let idflag = false;
+                checkid.addEventListener("click", (event) => {
+                    if(document.getElementById("id").value != ""){
+                        fetch("/signup/check", {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json",},
+                            body: JSON.stringify({
+                                contents : document.getElementById("id").value,
+                                flag : "ID"
+                            })
                         })
-                        
-                    })
-                    .then((reply) => reply.json())
-                    .then((message) => {
-                        console.log(message.msg);
-                    })
-                    .catch(error => console.log(error));
+                        .then((reply) => reply.json())
+                        .then((message) => {
+                            alert(message.msg);
+                            if(message.flag) // true or false
+                                idflag = true;
+                        })
+                        .catch(error => console.log(error));
+                    }
+                    else
+                        alert("아이디를 입력해주세요");
                 });
+                document.getElementById("id").addEventListener("change", () => { idflag = false }); // 아이디 입력창이 변화할때마다 새로 검사하게끔
             </script>
-            <input type="text" name="st_password"placeholder="Password" style="height: 30px; width: 300px;"><br><br>
-            <input type="text" name="st_nickname" placeholder="NickName" style="height: 30px; width: 300px;"><br><br>
-            <input type="text" name="st_mail" placeholder="Email" style="height: 30px; width: 300px;"><br><br>
+            <input type="text" name="st_password"placeholder="Password" id="pwd" style="height: 30px; width: 300px;"><br><br>
+            <input type="text" name="st_nickname" placeholder="NickName" id="nickname" style="height: 30px; width: 300px;">
+            <button type="button" class="check-btn" id="checknick">중복검사</button><br><br>
+            <script>
+                const checknick = document.getElementById("checknick");
+                let nickflag = false;
+                checknick.addEventListener("click", () => {
+                    if(document.getElementById("nickname").value != ""){
+                        fetch("/signup/check", {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json",},
+                            body: JSON.stringify({
+                                contents : document.getElementById("nickname").value,
+                                flag : "Nick"
+                            })   
+                        })
+                        .then((reply) => reply.json())
+                        .then((message) => {
+                            alert(message.msg);
+                            if(message.flag)
+                                nickflag = true;
+                        })
+                        .catch(error => console.log(error));
+                    }
+                    else
+                        alert("닉네임을 입력해주세요");
+                });
+                document.getElementById("nickname").addEventListener("change", () => { nickflag = false }); // 아이디 입력창이 변화할때마다 새로 검사하게끔
+            </script>
+            <input type="text" name="st_mail" placeholder="Email" id="em" style="height: 30px; width: 300px;"><br><br>
             <input type="submit" class="signup-btn" value="회원가입">
         </form>
+        <script>
+            const submitbtn = document.getElementById("signform");
+            submitbtn.addEventListener("submit", (event) => {
+                if(nickflag && idflag && document.getElementById("pwd").value != "" && document.getElementById("em").value != "")
+                {
+                    alert("회원가입이 완료되었습니다!");
+                }
+                else
+                {
+                    event.preventDefault();
+                    alert("빈 칸이 있거나 중복 검사를 하지 않았습니다.");
+                }
+            });
+        </script>
     </div>
 
 </body>

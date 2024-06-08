@@ -10,7 +10,7 @@ const path = require('path');
 const { sequelize } = require('./DB/models');
 const port = 8080;
 
-sequelize.sync({ force: true })
+sequelize.sync()
     .then(() => {
         console.log("데이터 베이스 연결 성공")
     })
