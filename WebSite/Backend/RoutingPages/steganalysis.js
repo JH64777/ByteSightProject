@@ -3,7 +3,9 @@ const router = express.Router();
 const path = require('path');
 
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../Frontend/Views/analysis.html'));
+    res.render("analysis.html", {
+        loggedin : req.session.loggedin
+    });
 });
 
 router.get('/SubmitImage', (req, res) => {

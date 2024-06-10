@@ -67,12 +67,16 @@
         <div class="left-nav">
             <a href="/">홈</a>
             <a href="/study">공부 게시판</a>
-            <a href="/resources">자료방</a>
+            <a href="/resources">자료실</a>
             <a href="/analysis">스테가분석</a>
             <a href="/about">소개</a>
         </div>
         <div class="right-nav">
+            {% if loggedin %}
+            <a href="/login/logout" class="btn">로그아웃</a>
+            {% else %}
             <a href="/login" class="btn">로그인</a>
+            {% endif %}
             <a href="/signup" class="btn">회원가입</a>
         </div>
     </nav>

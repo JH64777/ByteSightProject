@@ -2,9 +2,18 @@ const express = require("express");
 const router = express.Router();
 const path = require('path');
 const Account = require("../DB/models/Account");
+const bcrypt = require("bcrypt");
+
+async function Hashing(plain){
+    const salt = await bcrypt.genSalt(10);
+    const hashingString = await bcrypt.hash(plain, salt);
+    return hashingString;
+}
 
 router.get("/", (req, res) =>{
-    res.sendFile(path.join(__dirname, "../../Frontend/Views/account.html"));
+    res.render("account.html", {
+        loggedin : req.session.loggedin
+    });
 });
 
 router.post("/check", async (req, res) => {
@@ -33,14 +42,12 @@ router.post("/check", async (req, res) => {
     }
 });
 
-router.post("/submit", (req, res) => {
-    
-    
+router.post("/submit", async (req, res) => {
     try {
         Account.create({ 
             nickname : req.body.st_nickname,
             id : req.body.st_id,
-            pwd : req.body.st_password,
+            pwd : await Hashing(req.body.st_password),
             email : req.body.st_mail
         });
         res.redirect("/");

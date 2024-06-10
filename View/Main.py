@@ -12,6 +12,8 @@ class Main(ParentView):
     def __init__(self):
         super().__init__()
         self.firstguide = GuideWindow()
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
     
     def ShowWindow(self):
         self.setWindowIcon(QIcon('View\\photo\\Blogo.png'))
@@ -19,11 +21,9 @@ class Main(ParentView):
         self.setGeometry(300, 300, 630, 600)
         self.show()
         self.firstguide.ShowWindow()
+        
 
 ############################################ 밑에서 부터는 실행 코드
-# dpi scaling을 하는 코드
-QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
 
 app = QApplication(sys.argv)
 main = Main()

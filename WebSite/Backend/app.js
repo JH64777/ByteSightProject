@@ -8,7 +8,12 @@ const login = require("./RoutingPages/login");
 const account = require("./RoutingPages/account");
 const path = require('path');
 const { sequelize } = require('./DB/models');
+const session = require("express-session");
+const nunjucks = require("nunjucks");
+require("dotenv").config();
+const env = process.env;
 const port = 8080;
+const sessionLength = 60 * 5 * 1000 // 5분
 
 sequelize.sync()
     .then(() => {
@@ -17,6 +22,19 @@ sequelize.sync()
     .catch((err) => {
         console.log(err);
     });
+
+nunjucks.configure("../Frontend/Views", {
+    autoescape: true,
+    express: app
+});
+
+app.use(session({ // 세션 생성
+    secret: env.SECRET_KEY,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, maxAge : sessionLength },
+    name: 'session-cookie'
+}));
 
 app.use(express.static(path.join(__dirname, '../Frontend')));
 app.use(express.urlencoded({extended : true}));
@@ -29,7 +47,9 @@ app.use("/login", login);
 app.use("/signup", account);
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../Frontend/Views/Home.html'));
+    res.render('Home.html', {
+        loggedin : req.session.loggedin
+    });
 });
 
 app.get("*", (req, res) => {

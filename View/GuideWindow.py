@@ -7,10 +7,7 @@ class GuideWindow(QDialog):  # 가이드 창을 위한 클래스
     def __init__(self):
         super().__init__()
         self.MakeWindow()
-        # dpi scaling을 하는 코드
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
-    
+
     def MakeWindow(self):
         explainText = """<h1 style="text-align:center;font-weight : bold;">ByteSight에 오신 것을 환영합니다!</h1><hr>
         <div style="font-weight:bold; font-size:18px">&lt;소개&gt;</div><br>

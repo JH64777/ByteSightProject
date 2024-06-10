@@ -40,7 +40,7 @@
         }
         .content {
             padding: 2em;
-            text-align: left;
+            text-align: center;
         }
         .content h1 {
             margin-top: 0;
@@ -59,6 +59,23 @@
         .highlight {
             color: #007BFF;
         }
+        .uploadIMG{
+            background-color: #ccc;
+            padding: 5em 5em;
+            margin: 0em 30em 1em 30em;
+            border-radius: 10%;
+        }
+        .uploadbtn{
+            background-color: #999;
+            padding: 10px 10px;
+            font-style: initial;
+            color: #333;
+            font-weight: bold;
+        }
+        .preview{
+            width: 256px;
+            height: 256px;
+        }
     </style>
 </head>
 <body>
@@ -67,23 +84,47 @@
         <div class="left-nav">
             <a href="/">홈</a>
             <a href="/study">공부 게시판</a>
-            <a href="/resources">자료방</a>
+            <a href="/resources">자료실</a>
             <a href="/analysis">스테가분석</a>
             <a href="/about">소개</a>
         </div>
         <div class="right-nav">
+            {% if loggedin %}
+            <a href="/login/logout" class="btn">로그아웃</a>
+            {% else %}
             <a href="/login" class="btn">로그인</a>
+            {% endif %}
             <a href="/signup" class="btn">회원가입</a>
         </div>
     </nav>
 
     <div class="content">
-        <h1>스테가날리시스</h1>
+        <h1>스테가분석</h1>
         <hr>
-        <!--여기다가 사진 띄울 수 있게 할 것-->
-        <input type="file" id="profile" accept="image/png, image/jpeg">
-        <br>파일을 업로드 해주세요
+        <div class="uploadIMG">
+        <img src="Views/Icons/uploadIcon.png" class="preview" id="default" alt="failed load image"><br>
+        </div>
+        <input type="file" id="profile" style="display: none;" accept="image/png, image/jpeg">
+        <label for="profile" class="uploadbtn">파일 업로드</label>
+        <button type="button" style="display: none;" id="submit"></button>
+        <label for="submit" class="uploadbtn" style="margin-left: 10px;">파일 전송</label>
     </div>
+    <script>
+        document.getElementById('profile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('default').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("submit").addEventListener('click', (event) =>{
+            alert("Well!"); // 여기에 fetch로 이미지 전송하는 것 넣기
+        });
+    </script>
 
 </body>
 </html>

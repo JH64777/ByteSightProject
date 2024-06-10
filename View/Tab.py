@@ -11,6 +11,7 @@ class TabGenerator(QWidget):
         self.tabinfo = {} # Key : 파일 이름, value : 파일에서 로드된 데이터들
         self.tabobj = {} # 후에 저장을 위한 dict {name:obj}
         self.resize(680, 1000)
+        
 
     def AddTab(self):
         vbox = QVBoxLayout()
