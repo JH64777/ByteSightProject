@@ -31,7 +31,7 @@ nunjucks.configure("../Frontend/Views", {
 app.use(session({ // 세션 생성
     secret: env.SECRET_KEY,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false, maxAge : sessionLength },
     name: 'session-cookie'
 }));
@@ -48,7 +48,8 @@ app.use("/signup", account);
 
 app.get('/', (req, res) => {
     res.render('Home.html', {
-        loggedin : req.session.loggedin
+        loggedin : req.session.loggedin,
+        nickname : req.session.userNick
     });
 });
 

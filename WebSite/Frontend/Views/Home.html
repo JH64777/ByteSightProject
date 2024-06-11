@@ -73,6 +73,7 @@
         </div>
         <div class="right-nav">
             {% if loggedin %}
+            <a href="/" class="btn">{{ nickname }}</a>
             <a href="/login/logout" class="btn">로그아웃</a>
             {% else %}
             <a href="/login" class="btn">로그인</a>

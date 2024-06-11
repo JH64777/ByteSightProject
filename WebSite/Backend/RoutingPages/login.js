@@ -34,6 +34,7 @@ router.get("/logout", (req, res) =>{
         if(req.session.loggedin)
         {
             req.session.destroy(() => {
+            res.clearCookie("session-cookie"); // 웹 브라우저에 남아 있는 세션 쿠키 제거
             res.send("<script>alert('로그아웃에 성공하셨습니다.'); window.location.href='http://localhost:8080';</script>");
             });
         }
