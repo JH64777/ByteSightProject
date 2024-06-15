@@ -33,4 +33,10 @@ module.exports = class Account extends Sequelize.Model{
             charset : "utf8"
         });
     }
+    static associate(models) {
+        this.hasMany(models.Post, {
+            foreignKey: 'accountNickname',
+            sourceKey: 'nickname'
+        });
+    }
 }
