@@ -66,8 +66,8 @@
     <nav class="navbar">
         <div class="left-nav">
             <a href="/">홈</a>
-            <a href="/study">공부 게시판</a>
-            <a href="/resources">자료실</a>
+            <a href="/board/study/1">공부 게시판</a>
+            <a href="/board/free/1">자유 게시판</a>
             <a href="/analysis">스테가분석</a>
             <a href="/about">소개</a>
         </div>
@@ -80,11 +80,11 @@
             <a href="/signup" class="btn">회원가입</a>
         </div>
     </nav>
-
-    <div class="content">
-        <h1>공부 게시판</h1>
-        <hr>
-    </div>
+    <form action="/board/{{ board }}/post/submit" method="post" class="content">
+        <input type="text" name="title" style="width: 600px; height: 30px; font-size: 20px; margin-bottom: 0.5em;" placeholder="제목을 입력해 주세요"><br>
+        <textarea placeholder="내용을 입력해 주세요" style="width: 600px; height: 520px; resize: none;" name="contents"></textarea><br>
+        <input type="submit" value="작성" class="btn">
+    </form><br>
 
 </body>
 </html>

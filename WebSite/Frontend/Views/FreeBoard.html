@@ -59,6 +59,9 @@
         .highlight {
             color: #007BFF;
         }
+        .postlist {
+            padding : 10px
+        }
     </style>
 </head>
 <body>
@@ -66,8 +69,8 @@
     <nav class="navbar">
         <div class="left-nav">
             <a href="/">홈</a>
-            <a href="/study">공부 게시판</a>
-            <a href="/resources">자료실</a>
+            <a href="/board/study/1">공부 게시판</a>
+            <a href="/board/free/1">자유 게시판</a>
             <a href="/analysis">스테가분석</a>
             <a href="/about">소개</a>
         </div>
@@ -82,9 +85,17 @@
     </nav>
 
     <div class="content">
-        <h1>자료실</h1>
+        <h1>자유 게시판</h1>
         <hr>
-    </div>
-
+        <div class="postlist">
+        {% if posts %}
+        현재 게시글이 없습니다.
+        {% else %}
+        게시글이 있습니다.
+        {% endif %}
+        </div>
+        <br>
+        <a href="/board/free/makepost" class="btn", style="text-decoration: none;">게시글 만들기</a>
+    </div><br>
 </body>
 </html>

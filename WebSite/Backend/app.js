@@ -2,11 +2,10 @@ const express = require("express");
 const app = express();
 const scenario = require("./RoutingPages/Scenario");
 const steganlysis = require("./RoutingPages/steganalysis");
-const study = require("./RoutingPages/study");
-const resources = require("./RoutingPages/resource");
 const login = require("./RoutingPages/login");
 const account = require("./RoutingPages/account");
 const path = require('path');
+const board = require("./RoutingPages/Board");
 const { sequelize } = require('./DB/models');
 const session = require("express-session");
 const nunjucks = require("nunjucks");
@@ -41,10 +40,9 @@ app.use(express.urlencoded({extended : true}));
 app.use(express.json());
 app.use("/scenario", scenario);
 app.use("/analysis", steganlysis);
-app.use("/resources", resources);
-app.use("/study", study);
 app.use("/login", login);
 app.use("/signup", account);
+app.use("/board", board);
 
 app.get('/', (req, res) => {
     res.render('Home.html', {
