@@ -52,6 +52,7 @@
             border: none;
             cursor: pointer;
             margin: 0.5em;
+            text-decoration-line: none;
         }
         .btn:hover {
             background-color: #555;
@@ -60,7 +61,22 @@
             color: #007BFF;
         }
         .postlist {
-            padding : 10px
+            padding: 10px;
+        }
+        .postlist ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .postlist li {
+            margin-bottom: 0.5em;
+        }
+        .postlist a {
+            text-decoration: none;
+            color: #333;
+        }
+        .postlist a:hover {
+            color: #007BFF;
         }
     </style>
 </head>
@@ -88,16 +104,18 @@
         <h1>공부 게시판</h1>
         <hr>
         <div class="postlist">
-            {% if posts %}
-            현재 게시글이 없습니다.
-            {% else %}
-            게시글이 있습니다.
-            {% endif %}
+        {% if posts.length == 0 %}
+        현재 게시글이 없습니다.
+        {% else %}
+        <ul>
+        {% for post in posts %}
+            <li><a href="/board/study/{{page}}/{{post.postID}}">{{ post.title }}</a></li>
+        {% endfor %}
+        </ul>
+        {% endif %}
         </div>
         <br>
-        <a href="/board/study/makepost" class="btn" style="text-decoration: none;">게시글 만들기</a>
+        <a href="/board/study/makepost" class="btn">게시글 만들기</a>
     </div><br>
-    
-
 </body>
 </html>

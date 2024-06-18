@@ -12,13 +12,20 @@ router.get("/", (req, res) =>{
 });
 
 router.post("/submit", async (req, res, next) =>{
+    let checker;
+
     const info = await Account.findOne({
         where : {
             id : req.body.st_id,
         }
     });
-
-    const checker = await bcrypt.compare(req.body.st_password, info.pwd);
+    
+    try {
+        checker = await bcrypt.compare(req.body.st_password, info.pwd);
+    } catch (error) {
+        checker = false;
+    }
+    
     if(checker)
     {
         req.session.userNick = info.nickname; // 세션에 닉네임 저장
