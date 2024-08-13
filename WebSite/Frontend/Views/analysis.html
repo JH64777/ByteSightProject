@@ -104,10 +104,12 @@
         <div class="uploadIMG">
         <img src="Views/Icons/uploadIcon.png" class="preview" id="default" alt="failed load image"><br>
         </div>
-        <input type="file" id="profile" style="display: none;" accept="image/png, image/jpeg">
-        <label for="profile" class="uploadbtn">파일 업로드</label>
-        <button type="button" style="display: none;" id="submit"></button>
-        <label for="submit" class="uploadbtn" style="margin-left: 10px;">파일 전송</label>
+        <form action="/analysis/SubmitImage" method="post" enctype="multipart/form-data">
+            <input type="file" id="profile" name="AI_Img" style="display: none;" accept="image/png, image/jpeg">
+            <label for="profile" class="uploadbtn">파일 업로드</label>
+            <button type="submit" style="display: none;" id="submit"></button>
+            <label for="submit" class="uploadbtn" style="margin-left: 10px;">파일 전송</label>
+        </form>
     </div>
     <script>
         document.getElementById('profile').addEventListener('change', function(event) {

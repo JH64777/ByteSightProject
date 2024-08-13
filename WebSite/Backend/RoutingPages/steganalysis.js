@@ -1,6 +1,7 @@
 const express = require("express")
 const router = express.Router();
-const path = require('path');
+const upload = require("../Operations/ImgProcess");
+
 
 router.get('/', (req, res) => {
     res.render("analysis.html", {
@@ -8,8 +9,9 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/SubmitImage', (req, res) => {
-    // 여기다가 인공지능 연결해서 하기
+router.post('/SubmitImage', upload.single('AI_Img'), (req, res) => {
+    console.log(req.file);
+    res.send("IMG Submit");
 });
 
 module.exports = router;

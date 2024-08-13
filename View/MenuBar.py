@@ -53,12 +53,10 @@ class MenuBar(ParentView):
     
     def OpenFile(self): # 파일 찾기 코드
         fname = QFileDialog.getOpenFileName(self.instance) # 파일 탐색기를 통해 파일을 선택할 수 있게 하는 코드
-
-        if fname[0]: # 파일 경로가 선택되었다면 안되면 그냥 넘어감
-            self.path = fname[0].replace("/", "//") # 경로
+        self.path = fname[0].replace("/", "//") # 경로
+        if fname[0] and self.path not in self.tabmaker.openedFiles: # 파일 경로가 선택되고 동일한 파일이 열려있지 않다면 실행함
             self.fileManager = FileManager(self.path)
             data, name = self.fileManager.ReadData() # hex데이터, 파일 이름
-
             self.tabmaker.CreateTab(name, data) # 텝 생성
             self.instance.setCentralWidget(self.tabmaker)
 

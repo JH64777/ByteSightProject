@@ -1,4 +1,6 @@
-with open("./exit.png", "rb") as f:
-    data = f.read()
+# import tensorflow as tf
+# import tensorflowjs as tfjs
 
-    print(data)
+
+# model = tf.keras.models.load_model('C:/Users/asdew32/Desktop/savedModel')
+# tfjs.converters.save_keras_model(model, 'C:/Users/asdew32/Desktop/jsModel')

@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QVBoxLayout, QScrollArea, QWidget
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication
 
 class GuideWindow(QDialog):  # 가이드 창을 위한 클래스
     def __init__(self):

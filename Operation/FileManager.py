@@ -4,7 +4,6 @@ import re
 class FileManager:
     def __init__(self, path):
         self.path = path # "C:\\Users\\CS4_12\\Desktop\\test.hwp"
-        self.name = path.split("//")
         self.file_size = os.path.getsize(path)
         self.data = None
         self.dataset = []
@@ -20,7 +19,7 @@ class FileManager:
         for i in range(0, len(formatdata), 48): # 16(16개의 열) * 2(16진수 두 글자) + 16(공백의 수) - 1(맨 마지막 제거할 공백)
             self.dataset.append(formatdata[i:i+47]) # 16byte 만큼씩 잘라서 리스트에 넣음
 
-        return self.dataset, self.name[len(self.name) - 1]
+        return self.dataset, self.path
     
     def SaveData(self, newData, path): # 파일을 저장하는 기능
         if path != None: # 다른이름으로 저장할 시
