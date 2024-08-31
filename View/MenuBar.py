@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QAction, QFileDialog
 from PyQt5.QtGui import QIcon
 from Tab import TabGenerator
 from ScenarioMaker import ScenarioMaker
+from Search import SearchWindow
 
 class MenuBar(ParentView):
     def __init__(self, instance): # 인스턴스를 받음으로 Main에서 메뉴바를 생성할 수 있게끔 설정
@@ -15,6 +16,7 @@ class MenuBar(ParentView):
         self.instance = instance
         self.guidewin = GuideWindow() # 가이드 창을 생성하기 위한 인스턴스
         self.tabmaker = TabGenerator()
+        self.search = SearchWindow()
         self.path = None
         self.scenario = None
         self.CreateMenuBar()
@@ -34,7 +36,9 @@ class MenuBar(ParentView):
         bringGuide.triggered.connect(self.BringGuide) # 해당 항목 선택될 시 Bring Guide 호출
         scenario1.triggered.connect(functools.partial(self.BringScenario, 1))
         scenario2.triggered.connect(functools.partial(self.BringScenario, 2))
-        
+
+        searchFunc = QAction(QIcon(None), "검색", self.instance) # 검색하는 버튼 생성
+        searchFunc.triggered.connect(self.Search) # 검색 하는 함수와 연결
 
         menubar = self.instance.menuBar() # 메뉴바에 대한 객체 생성
         menubar.setNativeMenuBar(False) # 기본으로 PyQt에서 제공하는 메뉴바 사용 안함(사용자 지정으로 사용할 것임을 의미)
@@ -43,14 +47,14 @@ class MenuBar(ParentView):
         filemenu.addAction(loadFile) # 파일 불러오기 액션 추가
         filemenu.addAction(saveFile) # 파일 저장 액션 추가
         filemenu.addAction(saveasFile) # 파일 다른 이름으로 저장
-
-        menubar.addMenu('설정') # 메뉴바 설정 버튼 생성
         
         guide = menubar.addMenu('가이드라인') # 메뉴바 가이드라인 버튼 생성
         guide.addAction(bringGuide) # 가이드 북 액션 추가
         guide.addAction(scenario1) # 가이드 시나리오1 추가
         guide.addAction(scenario2) # 가이드 시나리오2 추가
-    
+
+        menubar.addAction(searchFunc) # 메뉴바에 버튼 적용
+
     def OpenFile(self): # 파일 찾기 코드
         fname = QFileDialog.getOpenFileName(self.instance) # 파일 탐색기를 통해 파일을 선택할 수 있게 하는 코드
         self.path = fname[0].replace("/", "//") # 경로
@@ -88,3 +92,6 @@ class MenuBar(ParentView):
                 self.scenario.Scenario("Scenario2", "http://localhost:8080/scenario/2")
             case _:
                 pass
+    
+    def Search(self):
+        self.search.MakeWindow()

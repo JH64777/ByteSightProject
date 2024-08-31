@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteSight</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 0.5em 0em;
+        }
+        .navbar li {
+            display: inline;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 2em;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .navbar .left-nav {
+            margin-left: -2em;
+        }
+        .navbar .left-nav a {
+            margin-right: 1em;
+        }
+        .navbar .right-nav a {
+            margin-left: 1em;
+        }
+        .navbar .right-nav {
+            display: flex;
+            align-items: center;
+        }
+        .content {
+            padding: 2em;
+            text-align: center;
+        }
+        .content h1 {
+            margin-top: 0;
+        }
+        .btn {
+            padding: 0.5em 1em;
+            color: white;
+            background-color: #333;
+            border: none;
+            cursor: pointer;
+            margin: 0.5em;
+            text-decoration-line: none;
+        }
+        .btn:hover {
+            background-color: #555;
+        }
+        .highlight {
+            color: #007BFF;
+        }
+        .postlist {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1em 0;
+        font-family: Arial, sans-serif;
+        }
+    
+        .postlist th, .postlist td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+        }
+    
+        .postlist th {
+        background-color: #f4f4f4;
+        color: #333;
+        font-weight: bold;
+        }
+    
+        .postlist tr:nth-child(even) {
+        background-color: #f9f9f9;
+        }
+    
+        .postlist tr:hover {
+        background-color: #f1f1f1;
+        }
+    
+        .postlist a {
+        text-decoration: none;
+        color: #007BFF;
+        }
+    
+        .postlist a:hover {
+        text-decoration: underline;
+        }
+    
+    .no-posts {
+        text-align: center;
+        padding: 20px;
+        color: #888;
+        font-size: 1.2em;
+    }
+        .meatball_btn { /* 창 크기가 작을 때 뜨는 메뉴 버튼 */
+            background-color: #555;
+            width: 4em;
+            height: 4em;
+            border-radius: 20%;
+            border:none;
+            margin-left: 10px;
+            display: none;
+        }
+        .meatball_btn:active {
+            background-color: #777;
+        }
+        .meatball_btn div {
+            width : 5px;
+            height : 5px;
+            border-radius: 50%;
+            background-color: #ffff;
+            display: inline-block;
+            align-items: center;
+        }
+        @media screen and (max-width: 900px){ /* 해당 부분이 윈도우의 너비가 줄어들었을 때 작은 메뉴창이 뜨게끔 하는 코드 */
+            .left-nav{
+                display: none;
+            }
+            .meatball_btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <button type="button" class="meatball_btn">
+            <div></div>
+            <div></div>
+            <div></div>
+        </button>
+
+        <ul class="left-nav">
+            <li><a href="/">홈</a></li>
+            <li><a href="/board/study/1">공부 게시판</a></li>
+            <li><a href="/board/free/1">자유 게시판</a></li>
+            <li><a href="/analysis">스테가분석</a></li>
+            <li><a href="/about">소개</a></li>
+        </ul>
+
+        <ul class="right-nav">
+            {% if loggedin %}
+            <li><a href="/login/logout" class="btn">로그아웃</a></li>
+            {% else %}
+            <li><a href="/login" class="btn">로그인</a></li>
+        {% endif %}
+            <li><a href="/signup" class="btn">회원가입</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <h1>{{ boardtitle }} 게시판</h1>
+        <hr>
+        <table class="postlist">
+            <tr>
+                <th style="width: 50%;">제목</th>
+                <th style="width: 25%;">작성자</th>
+                <th style="width: 25%;">작성일</th>
+            </tr>
+            {% if posts|length == 0 %}
+            <tr>
+                <td colspan="3" class="no-posts">현재 게시글이 없습니다.</td>
+            </tr>
+            {% else %}
+                {% for post in posts %}
+                <tr>
+                    <td><a href="/board/free/{{page}}/{{post.postid}}">{{ post.title }}</a></td>
+                    <td>{{ post.accountnickname_id }}</td>
+                    <td>{{ post.createdtime }}</td>
+                </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+        <br>
+        <a href="/board/{{category}}/makepost" class="btn">게시글 만들기</a>
+    </div><br>
+</body>
+</html>

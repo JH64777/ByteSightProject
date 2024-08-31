@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteSight</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 0.5em 2em;
+        }
+        .navbar li {
+            display: inline;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 1em;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .navbar a:hover {
+            color: #007BFF;
+        }
+        .navbar .left-nav {
+            margin-left: -2em;
+        }
+        .navbar .right-nav {
+            display: flex;
+            align-items: center;
+        }
+        .content {
+            padding: 2em;
+            text-align: center;
+        }
+        .content h1 {
+            margin-top: 0;
+            font-size: 2.5em;
+            color: #007BFF;
+        }
+        .meatball_btn { 
+            background-color: #555;
+            width: 3em;
+            height: 3em;
+            border-radius: 50%;
+            border: none;
+            margin-left: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .meatball_btn:active {
+            background-color: #777;
+        }
+        .meatball_btn div {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin: 0.3em 0;
+        }
+        @media screen and (max-width: 900px){
+            .left-nav {
+                display: none;
+            }
+            .meatball_btn {
+                display: flex;
+            }
+        }
+        .post {
+            width: 1000px; /* 고정된 너비 */
+            min-width: 600px; /* 최소 너비 */
+            margin: 2em auto;
+            padding: 2em;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .post h3 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 0.5em;
+            margin-bottom: -10px;
+        }
+        .post h5 {
+            color: #333;
+            text-align: right;
+            margin-bottom: -10px;
+        }
+        .post p {
+            color: #777;
+            text-align: right;
+            font-size: 10px;
+            font: bold;
+        }
+        .post hr {
+            border: none;
+            height: 1px;
+            background-color: #ddd;
+            margin-bottom: 2em;
+        }
+        .contents {
+            line-height: 1.6;
+            min-height: 400px;
+            color: #666;
+        }
+        .backbtn {
+            color: #ffff;
+            text-decoration: none;
+            background-color: #333;
+            padding: 0.5em 2em;
+        }
+        .btnaligner {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <button type="button" class="meatball_btn">
+            <div></div>
+            <div></div>
+            <div></div>
+        </button>
+
+        <ul class="left-nav">
+            <li><a href="/">홈</a></li>
+            <li><a href="/board/study/1">공부 게시판</a></li>
+            <li><a href="/board/free/1">자유 게시판</a></li>
+            <li><a href="/analysis">스테가분석</a></li>
+            <li><a href="/about">소개</a></li>
+        </ul>
+
+        <ul class="right-nav">
+            {% if loggedin %}
+            <li><a href="/login/logout" class="btn">로그아웃</a></li>
+            {% else %}
+            <li><a href="/login" class="btn">로그인</a></li>
+            {% endif %}
+            <li><a href="/signup" class="btn">회원가입</a></li>
+        </ul>
+    </nav>
+    <div class="post">
+        <h3>{{ title }}</h3>
+        <h5>작성자 : {{ accountnickname_id }}</h5> <p>작성날짜 : {{ createdtime }}</p>
+        <hr>
+        <div class="contents">
+            {{ contents }}
+        </div>
+        <div class="btnaligner"><a href="/board/{{ boardname_id }}/{{ pageNum }}" class="backbtn">목록</a></div>
+    </div>
+</body>
+</html>
