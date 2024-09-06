@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteSight</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .inputIMG{
+            text-align: center;
+            margin-top: 50em;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 0.5em 0em;
+        }
+        .navbar li {
+            display: inline;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 2em;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .navbar .left-nav {
+            margin-left: -2em;
+        }
+        .navbar .left-nav a {
+            margin-right: 1em;
+        }
+        .navbar .right-nav a {
+            margin-left: 1em;
+        }
+        .navbar .right-nav {
+            display: flex;
+            align-items: center;
+        }
+        .content {
+            padding: 2em;
+            text-align: center;
+        }
+        .content h1 {
+            margin-top: 0;
+        }
+        .btn {
+            padding: 0.5em 1em;
+            color: white;
+            background-color: #333;
+            border: none;
+            cursor: pointer;
+            margin: 0.5em;
+        }
+        .btn:hover {
+            background-color: #555;
+        }
+        .highlight {
+            color: #007BFF;
+        }
+        .uploadIMG {
+            background-color: #ccc;
+            border-radius: 10%;
+            margin: auto;
+            max-width: 50em;
+        }
+        .uploadIMG img {
+            padding: 5em;
+        }
+        .uploadbtn{
+            background-color: #999;
+            padding: 15px 15px;
+            margin-top: 100px;
+            font-style: initial;
+            color: #333;
+            font-weight: bold;
+        }
+        .preview{
+            width: 256px;
+            height: 256px;
+        }
+        .btnpack{
+            margin-top: 5%;
+        }
+        .meatball_btn { /* 창 크기가 작을 때 뜨는 메뉴 버튼 */
+            background-color: #555;
+            width: 4em;
+            height: 4em;
+            border-radius: 20%;
+            border:none;
+            margin-left: 10px;
+            display: none;
+        }
+        .meatball_btn:active {
+            background-color: #777;
+        }
+        .meatball_btn div {
+            width : 5px;
+            height : 5px;
+            border-radius: 50%;
+            background-color: #ffff;
+            display: inline-block;
+            align-items: center;
+        }
+        .preview {
+            width: 256px;
+            height: 256px;
+        }
+        .resultExplain {
+            margin-bottom: 0px;
+        }
+        @media screen and (max-width: 900px){ /* 해당 부분이 윈도우의 너비가 줄어들었을 때 작은 메뉴창이 뜨게끔 하는 코드 */
+            .left-nav{
+                display: none;
+            }
+            .meatball_btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <button type="button" class="meatball_btn">
+            <div></div>
+            <div></div>
+            <div></div>
+        </button>
+        
+        <ul class="left-nav">
+            <li class="navList"><a href="/">홈</a></li>
+            <li class="navList"><a href="/board/study/1">공부 게시판</a></li>
+            <li class="navList"><a href="/board/free/1">자유 게시판</a></li>
+            <li class="navList"><a href="/analysis">스테가분석</a></li>
+            <li class="navList"><a href="/about">소개</a></li>
+        </ul>
+
+        <ul class="right-nav">
+            {% if loggedin %}
+            <li class="navList"><a href="/login/logout" class="btn">로그아웃</a></li>
+            {% else %}
+            <li class="navList"><a href="/login" class="btn">로그인</a></li>
+            {% endif %}
+            <li class="navList"><a href="/signup" class="btn">회원가입</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <h1>결과</h1>
+        <hr>
+        <img src={{ imgpath }} alt="Error" class="preview"/> <!-- 여기에 사용자가 올렸던 사진의 경로를 올리면 됨 -->
+        <br>
+        <h3 class="resultExplain">선택하신 사진속에 파일이 숨겨져 있을 확률은 다음과 같습니다.</h3>
+        <br>
+        <div id="result">
+            <h2>{{ percent }}%</h2> <!-- 여기에 확률이 뜨면 됨 -->
+            {% if percent >= 80 %}
+            <h1>매우 위험</h1>
+            <script>document.getElementById("result").style.color="darkred";</script>
+            {% elif percent >= 50 %}
+            <h1>위험</h1>
+            <script>document.getElementById("result").style.color="red";</script>
+            {% elif percent >= 30 %}
+            <h1>주의</h1>
+            <script>document.getElementById("result").style.color="orange";</script>
+            {% else %}
+            <h1>안전</h1>
+            <script>document.getElementById("result").style.color="green";</script>
+            {% endif %}
+        </div>
+        <!--이제 아래에 파일 추출 관련 버튼 만들면 됨 2024-09-06-->
+    </div>
+
+</body>
+</html>
