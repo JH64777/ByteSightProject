@@ -41,6 +41,10 @@ DEBUG = True # 개발용으로 실행하게끔 (로그를 계속 남기게 하�
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+# Session 관리
+
+
+
 
 # Application definition
 

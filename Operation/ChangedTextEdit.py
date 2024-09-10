@@ -1,10 +1,12 @@
-from PyQt5.QtGui import QKeyEvent, QTextCursor, QTextBlockFormat, QTextCharFormat
+from PyQt5.QtGui import QKeyEvent, QTextCursor, QTextBlockFormat
 from PyQt5.QtWidgets import QTextEdit
 from PyQt5.QtCore import Qt
 
 class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글쓰는 위젯에 Key 이벤트, 글자 사이의 간격 등을 수정한 것)
-    def __init__(self):
+    def __init__(self, observer):
         super().__init__()
+        self.observer = observer
+        self.setStyleSheet("border-style: none;")
         self.allowedEdittingKey = (Qt.Key_0, Qt.Key_1, Qt.Key_2, Qt.Key_3, Qt.Key_4, Qt.Key_5, Qt.Key_6, Qt.Key_7, Qt.Key_8, Qt.Key_9, Qt.Key_A, Qt.Key_B, Qt.Key_C, Qt.Key_D, Qt.Key_E, Qt.Key_F, Qt.Key_Backspace) # 파일 편집 시 허용된 글자
         self.insertCharCount = 0 # 입력되는 글자 숫자를 세어주는 변수
         self.setLineSpacing(150) # 줄 간격의 크기 1.5배
@@ -62,6 +64,16 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
         else: # 나머지 경우
             e.ignore() # 키 무시
             return None # 조기 종료
-            
+        
+
         return super().keyPressEvent(e) # 원래 방식대로 동작하게끔 지정
     
+
+class ChangedQTextEdit2(QTextEdit): # QTextEdit을 수정한 버전2 ANSI로 인코딩 되는 부분을 위해서 새롭게 하나 더 만듦
+    def __init__(self, observer):
+        super().__init__()
+        self.observer = observer
+
+    def keyPressEvent(self, e: QKeyEvent | None) -> None:
+        self.observer.Notify()
+        return super().keyPressEvent(e)

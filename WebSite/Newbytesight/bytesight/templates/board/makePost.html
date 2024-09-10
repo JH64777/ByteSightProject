@@ -85,6 +85,39 @@
             display: inline-block;
             align-items: center;
         }
+        .sideNav {
+            background-color: #333;
+            display: none;
+            position: absolute;
+            height: 800px;
+            width: 250px;
+            animation-name: move;
+            animation-duration: 2s;
+            animation-iteration-count: 1;
+            animation-play-state: paused;
+        }
+        .sideNav a {
+            text-decoration: none;
+            color: #ffff;
+            font-size: 24px;
+        }
+        .sideNav li {
+            margin-top: 10px;
+        }
+        .SideNavBackBtn {
+            float: right;
+            margin-right: 10px;
+            background-color: #777;
+            width: 3em;
+            height: 3em;
+            border-radius: 20%;
+            border:none;
+            font-size: 15px;
+            color: white;
+        }
+        .SideNavBackBtn:active {
+            background-color: #999;
+        }
         @media screen and (max-width: 900px){ /* 해당 부분이 윈도우의 너비가 줄어들었을 때 작은 메뉴창이 뜨게끔 하는 코드 */
             .left-nav{
                 display: none;
@@ -93,9 +126,29 @@
                 display: block;
             }
         }
+        @keyframes move {
+            from { left: -250px; }
+            to { left: 0px; }
+        }
+        @keyframes moveBack {
+            from { left: 0px; }
+            to { left: -250px; }
+        }
     </style>
 </head>
 <body>
+    <nav class="sideNav" id="move">
+        <ul>
+            <li><button class="SideNavBackBtn">X</button></li>
+            <br>
+            <br>
+            <li><a href="/">홈</a></li>
+            <li><a href="/board/study/1">공부게시판</a></li>
+            <li><a href="/board/free/1">자유게시판</a></li>
+            <li><a href="/analysis">스테가분석</a></li>
+            <li><a href="/about">소개</a></li>
+        </ul>
+    </nav>
 
     <nav class="navbar">
         <button type="button" class="meatball_btn">
@@ -121,6 +174,23 @@
             <li><a href="/signup" class="btn">회원가입</a></li>
         </ul>
     </nav>
+
+    <script>
+        sideNav = document.querySelector('.sideNav');
+        btn = document.querySelector('.meatball_btn');
+        Backbtn = document.querySelector('.SideNavBackBtn');
+        btn.onclick = function click() {
+            sideNav.style.animationName = "move";
+            sideNav.style.display = 'inline-block';
+            sideNav.style.animationPlayState = 'running';
+        };
+
+        Backbtn.onclick = async function clickBack() {
+            sideNav.style.animationName = 'moveBack';
+            sideNav.style.animationPlayState = 'running';
+            setTimeout(()=>{ sideNav.style.display = "none"; }, 1900);
+        }
+    </script>
 
     <form action="/board/{{ board }}/post/submit" method="post" class="content">
         <input type="text" name="title" style="width: 600px; height: 30px; font-size: 20px; margin-bottom: 0.5em;" placeholder="제목을 입력해 주세요"><br>
