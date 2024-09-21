@@ -22,7 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('', include("home.urls")),
     path('admin/', admin.site.urls), # 메인 페이지
-    # path('scenario/', include("scenario.urls")), # 시나리오 문제 다운 경로
+    path('scenario/', include("scenario.urls")), # 시나리오 문제 다운 경로
     path('analysis/', include("staganalysis.urls")), # 스테가 분석 경로
     path('login/', include("login.urls")), # 로그인 관련 경로
     path('signup/', include("account.urls")), # 회원가입 관련 경로

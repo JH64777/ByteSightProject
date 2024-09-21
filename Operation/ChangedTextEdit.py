@@ -48,8 +48,14 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
                 self.setTextColor(Qt.red) # 색깔 변경
                 e = QKeyEvent(e.type(), e.key(), e.modifiers(), e.text().upper()) # 알파벳 문자 e변수에 대문자로 변경한 QKeyEvent객체 대입 (알파벳이 아니어도 잘 작동함)
                 
+                
             else: # BackSpace라면
-                pass
+                if 1 + 3 * (int(cursor.position() / 3)) == cursor.position(): # 중간 부분에서 BackSpaceBar라면
+                    return # BackSpaceBar 처리 못하게 조기 종료
+                else:
+                    cursor.movePosition(QTextCursor.PreviousWord, QTextCursor.KeepAnchor) # 단어 단위로 커서 이동
+                    self.setTextCursor(cursor) # 한 단어 단위로 한번에 지우기 위해 커서 위치 변경 및 선택 상태 유지
+                    pass
             
         elif e.key() in (Qt.Key_Right, Qt.Key_Left, Qt.Key_Up, Qt.Key_Down): # 왼쪽 혹은 오른쪽 화살표키가 눌렸는가?
             if e.key() == Qt.Key_Left: # 왼쪽 화살표키가 눌렀는가?
@@ -65,8 +71,13 @@ class ChangedQTextEdit(QTextEdit): # QTextEdit를 수정한 버전 (기존 글�
             e.ignore() # 키 무시
             return None # 조기 종료
         
+        super().keyPressEvent(e) # 원래 방식대로 동작하게끔 지정
 
-        return super().keyPressEvent(e) # 원래 방식대로 동작하게끔 지정
+        if (cursor.position() % 3) - 1 == 0: # 이 부분은 한 칸의 첫 부분에 글자를 썼을 시 그 다음 글자를 0으로 채워주는 코드
+            cursor.insertText("0")
+            cursor.movePosition(QTextCursor.PreviousCharacter, QTextCursor.MoveAnchor) # 한 글자 전으로 커서 이동
+            self.setTextCursor(cursor)
+        
     
 
 class ChangedQTextEdit2(QTextEdit): # QTextEdit을 수정한 버전2 ANSI로 인코딩 되는 부분을 위해서 새롭게 하나 더 만듦

@@ -2,11 +2,9 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 from .forms import StegoForm
-import tensorflow as tf
+from .apps import StaganalysisConfig
 from Functions.Hash import MakeName
 from Functions.ReadyInputData import ReadyXdata
-
-model = tf.keras.models.load_model('C:/Users/asdew32/Desktop/final_project/WebSite/Newbytesight/bytesight/AI_Model/model_17.keras') # 모델 불러오기
 
 def StegoMainPage(request): # 스테가날리시스 메인 페이지
     variables = {'loggedin' : False}
@@ -27,7 +25,7 @@ def SubmitIMG(request): # 이미지 업로드 후 처리
             image_path = stegoimg.imgfile.path # 전체 경로 + 파일 이름/확장자 추출
 
             Xdata = ReadyXdata(image_path) # 입력 데이터 전처리
-            values["percent"] = round(model.predict(Xdata)[0][0] * 100, 2) # 인공지능 예측 실행
+            values["percent"] = round(StaganalysisConfig.model.predict(Xdata)[0][0] * 100, 2) # 인공지능 예측 실행
             values["imgpath"] = "/media/" + stegoimg.imgfile.name
             return render(request, "staganalysis/StegoResult.html", values)
     return Http404("오류가 발생했습니다.")
