@@ -7,7 +7,7 @@ from Functions.Hash import MakeName
 from Functions.ReadyInputData import ReadyXdata
 
 def StegoMainPage(request): # 스테가날리시스 메인 페이지
-    variables = {'loggedin' : False}
+    variables = {'loggedin' : request.session["loggedin"]}
     return render(request, "staganalysis/StegoMainPage.html", variables)
 
 @csrf_exempt

@@ -1,11 +1,14 @@
 from django.shortcuts import render
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponseServerError
+from django.http import JsonResponse, HttpResponseRedirect, HttpResponseServerError, HttpResponseNotAllowed
 from .models import Accounts
 from django.views.decorators.csrf import csrf_exempt
 import json
 from Functions.Hash import Hashing
 
 def SignupPage(request):
+    if request.session["loggedin"] == True:
+        return HttpResponseNotAllowed("이용하실 수 없는 요청입니다.")
+
     return render(request, "account/AccountPage.html") # 여기다가 html경로 적을 것
 
 @csrf_exempt # django 고유의 CSRF공격을 막기위한 정책 때문에 해당 데코레이터를 작성해 줘야함 (해당 요청에서는 정책을 사용하지 않겠다는 뜻)
