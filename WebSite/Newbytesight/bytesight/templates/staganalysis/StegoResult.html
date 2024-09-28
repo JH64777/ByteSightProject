@@ -170,6 +170,10 @@
             from { left: 0px; }
             to { left: -250px; }
         }
+        #ExtractIMG {
+            font-size: large;
+            padding: 1em;
+        }
     </style>
 </head>
 <body>
@@ -252,6 +256,14 @@
             {% endif %}
         </div>
         <!--이제 아래에 파일 추출 관련 버튼 만들면 됨 2024-09-06-->
+        <br>
+        <button id="ExtractIMG">사진 추출</button>
+        <script>
+            document.getElementById("ExtractIMG").onclick = function ExtractFile(){
+                let path = "{{ imgpath }}"; // 해당 부분 보안적 취약성이 있는 것 같음 나중에 해결해볼 것
+                console.log(path);
+            }
+        </script>
     </div>
 
 </body>
