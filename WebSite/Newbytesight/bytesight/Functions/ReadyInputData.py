@@ -1,7 +1,5 @@
-import os
 import numpy as np
-import cv2
-import matplotlib.pyplot as plt
+from matplotlib.pyplot import hist, close
 
 def PreProcessData(path): # 2024-09-27
     with open(path, "rb") as f:
@@ -12,8 +10,8 @@ def PreProcessData(path): # 2024-09-27
         EndOfImage = data.find(b"\xff\xd9", EndOfSOS) # EOI 위치 (SOS와 EOI 사이에는 ff d9라는 값이 존재할 수 없다 판단)
         data = list(data) # 히스토그램 데이터를 위해 리스트화 시킴
         del data[EndOfSOS : EndOfImage] # SOS의 끝 부분 ~ EOI까지의 길이 (Scan Data 즉, 각 셀의 색상 정보) 삭제(RGB값이 있는 곳을 없애기 위함)
-        counts, length, patches = plt.hist(data, bins=256, range=(0, 256)) # 히스토그램 값 추출
-        plt.close()
+        counts, length, patches = hist(data, bins=256, range=(0, 256)) # 히스토그램 값 추출
+        close()
         return counts
 
 # 여기서 부터 인공지능 관련 코드

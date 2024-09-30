@@ -261,7 +261,29 @@
         <script>
             document.getElementById("ExtractIMG").onclick = function ExtractFile(){
                 let path = "{{ imgpath }}"; // 해당 부분 보안적 취약성이 있는 것 같음 나중에 해결해볼 것
-                console.log(path);
+                fetch("/analysis/ExtractImage", {
+                    method : "POST",
+                    headers : {
+                        "Content-Type" : "application/json",
+                    },
+                    body : JSON.stringify({
+                        IMGpath : path
+                    })
+                }).then(response => {
+                    const ext = response.headers.get('X-File-Extension');
+                    return response.blob().then(blob => ({ blob, ext }));
+                })
+                .then(({ blob, ext }) => {
+                    const url = window.URL.createObjectURL(blob); // Blob URL 생성
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `ExtractedFile.${ext}`; // 파일명 설정
+                    document.body.appendChild(a);
+                    a.click();  // 파일 다운로드 트리거
+                    a.remove();  // 트리거 버튼 제거
+                }).catch(() => {
+                    alert("예기치 못한 에러가 발생하였습니다.");
+                });
             }
         </script>
     </div>

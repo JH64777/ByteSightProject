@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from .forms import StegoForm
 from .apps import StaganalysisConfig
 from Functions.Hash import MakeName
 from Functions.ReadyInputData import ReadyInputData
+from Functions.ExtractFile import Extract
+from json import loads
+import os
 
 def StegoMainPage(request): # 스테가날리시스 메인 페이지
     variables = {'loggedin' : request.session["loggedin"]}
@@ -30,6 +33,24 @@ def SubmitIMG(request): # 이미지 업로드 후 처리
             return render(request, "staganalysis/StegoResult.html", values)
     return Http404("오류가 발생했습니다.")
 
+
+@csrf_exempt # 나도 몰라 왜 그런건지 미칠 것 같아 아래 코드 해결해야해
+def ExtractIMG(request): # 파일 추출 및 다운로드 관련 쿼리문
+    data = None
+    body = loads(request.body.decode("utf-8"))
+    baseDir = os.path.dirname(__file__).replace("\\", "/")
+    path = baseDir[:baseDir.rfind("/")] + body["IMGpath"]
+    with open(path, 'rb') as f:
+        data = f.read()
+        f.seek(data.find(b"\xff\xda"))
+        f.seek(data.find(b"\xff\xd9") + 2)
+        # SOS 아랫 부분에 ff d9라는 데이터는 EOI밖에 없으므로 f.seek()으로 ff da부터 찾은 뒤에 그 뒤에 있을 EOI 시그니처를 찾는 작업을 한 것이다.
+        data = f.read() # 숨겨져 있는 데이터 부분을 가져온다.
+        extractedFileObject, mimeType, ext = Extract(data) # cursor가 ff d9 위치에 있으므로 그 뒤에 있는 데이터를 가지고 오는 작업
+        file = HttpResponse(extractedFileObject, content_type=mimeType) # 전송할 파일 준비
+        file['Content-Disposition'] = f'attachment; filename="Extract.{ext}"'
+        file['X-File-Extension'] = ext  # 확장자를 커스텀 헤더로 추가
+        return file # 응답 데이터
 
 
 ######## AI 모델 새롭게 만들고 테스트해본 결과 (2024-09-29)

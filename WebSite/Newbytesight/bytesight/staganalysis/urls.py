@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     path("", views.StegoMainPage, name="StegoMainPage"),
     path("SubmitImage", views.SubmitIMG, name="IMGsubmit"),
+    path("ExtractImage", views.ExtractIMG, name="Extract"),
 ]
