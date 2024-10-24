@@ -34,7 +34,7 @@ def SubmitIMG(request): # 이미지 업로드 후 처리
     return Http404("오류가 발생했습니다.")
 
 
-@csrf_exempt # 나도 몰라 왜 그런건지 미칠 것 같아 아래 코드 해결해야해
+@csrf_exempt
 def ExtractIMG(request): # 파일 추출 및 다운로드 관련 쿼리문
     data = None
     body = loads(request.body.decode("utf-8"))

@@ -27,5 +27,6 @@ urlpatterns = [
     path('login/', include("login.urls")), # 로그인 관련 경로
     path('signup/', include("account.urls")), # 회원가입 관련 경로
     path('board/', include("board.urls")), # 게시판 관련 경로
+    path('createstego/', include("steganography.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # 사진 업로드를 위한 코드

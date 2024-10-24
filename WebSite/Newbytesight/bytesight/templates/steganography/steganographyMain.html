@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -50,6 +51,22 @@
         }
         .content h1 {
             margin-top: 0;
+        }
+        .coverIMG {
+            background-color: #ccc;
+            border-radius: 10%;
+            padding: 0em 4em 1em 4em;
+            margin: 0em 1em;
+            max-width: 50em;
+            display: inline-block;
+        }
+        .secretIMG {
+            background-color: #ccc;
+            border-radius: 10%;
+            padding: 0em 4em 1em 4em;
+            margin: 0em 1em;
+            max-width: 50em;
+            display: inline-block;
         }
         .btn {
             padding: 0.5em 1em;
@@ -118,7 +135,24 @@
         .SideNavBackBtn:active {
             background-color: #999;
         }
-        @media screen and (max-width: 900px){ /* 해당 부분이 윈도우의 너비가 줄어들었을 때 작은 메뉴창이 뜨게끔 하는 코드 */
+        .uploadbtn{
+            background-color: #999;
+            padding: 5px;
+            font-style: initial;
+            color: #333;
+            font-weight: bold;
+            
+        }
+        .submitIMG {
+            background-color: #999;
+            padding: 15px;
+            margin-top: 20px;
+            font-style: initial;
+            color: #333;
+            font-weight: bold;
+            display: inline-block;
+        }
+        @media screen and (max-width: 990px){ /* 해당 부분이 윈도우의 너비가 줄어들었을 때 작은 메뉴창이 뜨게끔 하는 코드 */
             .left-nav{
                 display: none;
             }
@@ -191,11 +225,36 @@
             setTimeout(()=>{ sideNav.style.display = "none"; }, 1900);
         }
     </script>
+    
+    <div class="content">
+        <h1>스테가노그래피 생성</h1>
+        <form action="/createstego/fileSubmit/" method="post" enctype="multipart/form-data">
+        <div class="coverIMG">
+            <h3>커버 이미지</h3>
+            <img src="{% static '/staganalysis/uploadIcon.png' %}" id="cover" alt="failed load image" style="width: 256px; height: 256px;"><br>
+            <input type="file" id="chooseCover" name="coverimg" style="display: none;" accept="image/jpeg">
+            <label for="chooseCover" class="uploadbtn">커버 이미지 선택</label>
+            <h3>숨길 파일</h3>
+            <input type="file" id="chooseSecret" name="secretdata">
+        </div>
+        <br>
+            <button type="submit" id="fileSubmit" name="secret_coverIMG" style="display: none;"></button>
+            <label for="fileSubmit" class="submitIMG">파일 전송</label>
+        </form>
+    </div>
 
-    <form action="/board/{{ board }}/post/submit" method="post" class="content">
-        <input type="text" name="title" style="width: 600px; height: 30px; font-size: 20px; margin-bottom: 0.5em;" placeholder="제목을 입력해 주세요"><br>
-        <textarea placeholder="내용을 입력해 주세요" style="width: 600px; height: 520px; resize: none;" name="contents"></textarea><br>
-        <input type="submit" value="작성" class="btn">
-    </form><br>
+    <script>
+        document.getElementById('chooseCover').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('cover').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+
 </body>
 </html>
