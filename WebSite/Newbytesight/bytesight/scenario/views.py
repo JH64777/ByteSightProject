@@ -1,6 +1,5 @@
 from django.http import HttpResponseNotFound, HttpResponse
 from urllib.parse import quote
-import os
 
 # Create your views here.
 def DownloadExample(request, ScenarioNum): # 시나리오 파일을 다운로드 시켜주는 함수

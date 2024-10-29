@@ -118,6 +118,22 @@
         .SideNavBackBtn:active {
             background-color: #999;
         }
+        .filebtn {
+            background-color: #555;
+            color: white;
+            padding: 0.5em 1em;
+            font-size: 12px;
+        }
+        .filearea {
+            border: 1px dotted;
+            background-color: #eee;
+            width: 604px;
+            height: 30px;
+            text-align: left;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+        }
         @media screen and (max-width: 900px){ /* 해당 부분이 윈도우의 너비가 줄어들었을 때 작은 메뉴창이 뜨게끔 하는 코드 */
             .left-nav{
                 display: none;
@@ -192,10 +208,30 @@
         }
     </script>
 
-    <form action="/board/{{ board }}/post/submit" method="post" class="content">
-        <input type="text" name="title" style="width: 600px; height: 30px; font-size: 20px; margin-bottom: 0.5em;" placeholder="제목을 입력해 주세요"><br>
-        <textarea placeholder="내용을 입력해 주세요" style="width: 600px; height: 520px; resize: none;" name="contents"></textarea><br>
+    <form action="/board/{{ board }}/post/submit" method="post" enctype="multipart/form-data" class="content">
+        <input type="text" name="title" style="width: 600px; height: 30px; font-size: 20px; margin-bottom: 0.2em;" placeholder="제목을 입력해 주세요"><br>
+        {% if board == "study" %}
+        <div class="filearea"> 
+            <label class="filebtn" for="fileInput">파일 업로드</label><span class="file-name" id="fileName" style="margin-left: 5px;">선택된 파일이 없습니다</span>
+            <input type="file" id="fileInput" name="uploadFile" style="display: none;" accept="application/zip">
+        </div>
+        {% endif %}
+        <textarea placeholder="내용을 입력해 주세요" style="width: 600px; height: 300px; resize: none; margin-top: 0.2em" name="contents"></textarea><br>
         <input type="submit" value="작성" class="btn">
     </form><br>
+
+    <script>
+       const fileInput = document.getElementById("fileInput");
+        const fileName = document.getElementById("fileName");
+
+        fileInput.addEventListener("change", () => {
+            if (fileInput.files.length > 0) {
+                fileName.textContent = fileInput.files[0].name;
+            } else {
+                fileName.textContent = "선택된 파일이 없습니다";
+            }
+        });
+    </script>
+
 </body>
 </html>

@@ -168,6 +168,10 @@
         .btnaligner {
             text-align: center;
         }
+        .file {
+            text-align: right;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -231,6 +235,9 @@
         <h5>작성자 : {{ accountnickname_id }}</h5> <p>작성날짜 : {{ createdtime }}</p>
         <hr>
         <div class="contents">
+            {% if uploadedfile %}
+                <div class="file"><a href="/board/{{ boardname_id }}/{{ pageNum }}/{{ postid }}/{{ uploadedfile }}">첨부파일</a></div>
+            {% endif %}
             {{ contents }}
         </div>
         <div class="btnaligner"><a href="/board/{{ boardname_id }}/{{ pageNum }}" class="backbtn">목록</a></div>
